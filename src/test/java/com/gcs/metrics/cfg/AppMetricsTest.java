@@ -1,5 +1,5 @@
 /****************************************************************************
- * FILE: AppMetricsTestDisabled.java
+ * FILE: AppMetricsTest.java
  * DSCRPT: 
  ****************************************************************************/
 
@@ -7,9 +7,14 @@
 
 
 
-package com.kagr.metrics.cfg;
+package com.gcs.metrics.cfg;
 
 
+
+
+
+import com.gcs.metrics.AppMetrics;
+import com.gcs.metrics.cfg.properties.InfluxMetricsProps;
 
 
 
@@ -30,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-public class AppMetricsTestDisabled
+public class AppMetricsTest
 {
 
     @Test
@@ -45,17 +50,16 @@ public class AppMetricsTestDisabled
                             .setEncoding("UTF-8")
                             .setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
                             .setValidating(false)
-                            .setFileName("./src/test/resources/junit-metrics-disabled.xml"));
+                            .setFileName("./src/test/resources/junit-metrics.xml"));
             final XMLConfiguration config = builder.getConfiguration();
             AppMetrics metrics = AppMetrics.initFromConfig(config);
-
-            Assert.assertEquals(metrics.isEnabled(), false);
-            Assert.assertNull(metrics.getDbName());
+            Assert.assertEquals(metrics.getMetricsConfig().isEnabled(), true);
+            Assert.assertEquals(((InfluxMetricsProps)metrics.getMetricsConfig()).getBatchSize(), 1000);
+            Assert.assertEquals(((InfluxMetricsProps)metrics.getMetricsConfig()).getDbUsername(), "ee6SHf2cfaEgkYpJsQNZHUSPvpJ81ScU");
         }
         catch (ConfigurationException ex_)
         {
             _logger.error(ex_.toString(), ex_);
         }
     }
-
 }

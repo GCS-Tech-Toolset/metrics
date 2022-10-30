@@ -1,5 +1,5 @@
 /****************************************************************************
- * FILE: AppMetricsTest.java
+ * FILE: MetricsPublisherTest.java
  * DSCRPT: 
  ****************************************************************************/
 
@@ -7,7 +7,7 @@
 
 
 
-package com.kagr.metrics.cfg;
+package com.gcs.metrics.cfg;
 
 
 
@@ -18,8 +18,12 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+
+
+
+import com.gcs.metrics.AppMetrics;
 
 
 
@@ -30,10 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-public class AppMetricsTest
+public class MetricsPublisherTest
 {
 
     @Test
+    @Ignore
     public void test()
     {
         try
@@ -48,13 +53,23 @@ public class AppMetricsTest
                             .setFileName("./src/test/resources/junit-metrics.xml"));
             final XMLConfiguration config = builder.getConfiguration();
             AppMetrics metrics = AppMetrics.initFromConfig(config);
-            Assert.assertEquals(metrics.isEnabled(), true);
-            Assert.assertEquals(metrics.getBatchSize(), 1000);
-            Assert.assertEquals(metrics.getDbUsername(), "influxuser");
+
+
+            try
+            {
+                Thread.sleep(10_000);
+            }
+            catch (InterruptedException ex_)
+            {
+                _logger.error(ex_.toString(), ex_);
+            }
         }
         catch (ConfigurationException ex_)
         {
             _logger.error(ex_.toString(), ex_);
         }
+
+
     }
+
 }
