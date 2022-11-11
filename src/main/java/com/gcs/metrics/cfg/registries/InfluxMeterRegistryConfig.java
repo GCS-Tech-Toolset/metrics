@@ -38,7 +38,7 @@ public class InfluxMeterRegistryConfig implements InfluxConfig
 
 	public InfluxMeterRegistryConfig(MetricsProps props_)
 	{
-		this._influxMetricsProps = (InfluxMetricsProps) props_;
+		_influxMetricsProps = (InfluxMetricsProps) props_;
 	}
 
 
