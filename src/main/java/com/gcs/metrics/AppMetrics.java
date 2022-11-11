@@ -26,9 +26,11 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 
 
 
+import com.gcs.metrics.cfg.properties.MetricsConfigException;
 import com.gcs.metrics.cfg.properties.MetricsProps;
 import com.gcs.metrics.cfg.properties.MetricsPropsFactory;
 import com.gcs.metrics.cfg.registries.InfluxMeterRegistryConfig;
@@ -91,7 +93,7 @@ public class AppMetrics
 
 
 
-	public static AppMetrics initFromConfig(String cfg_)
+	public static AppMetrics initFromConfig(String cfg_) throws MetricsConfigException
 	{
 		try
 		{
@@ -119,7 +121,7 @@ public class AppMetrics
 
 
 
-	public static AppMetrics initFromConfig(XMLConfiguration cfg_)
+	public static AppMetrics initFromConfig(XMLConfiguration cfg_) throws MetricsConfigException
 	{
 
 		AppMetrics appM = getInstance();
@@ -238,7 +240,7 @@ public class AppMetrics
 
 
 
-	private MetricsProps loadConfig(XMLConfiguration cfg_)
+	private MetricsProps loadConfig(XMLConfiguration cfg_) throws MetricsConfigException
 	{
 		_enabled = cfg_.getBoolean(buildMetricsKey("Enabled"), false);
 		if (!_enabled)
@@ -254,7 +256,8 @@ public class AppMetrics
 			}
 		}
 
-		MetricsProps props = MetricsPropsFactory.getMetricsProps(cfg_.getString(buildMetricsKey("Registry")));
+		var key = buildMetricsKey("Registry");
+		MetricsProps props = MetricsPropsFactory.getMetricsProps(cfg_.getString(key));
 		props.loadFromConfig(cfg_);
 
 		if (_logger.isInfoEnabled())
@@ -270,7 +273,7 @@ public class AppMetrics
 
 
 
-	private void configureRegistry()
+	private void configureRegistry() throws MetricsConfigException
 	{
 		if (!_enabled)
 		{
@@ -280,22 +283,45 @@ public class AppMetrics
 
 		MeterRegistry meterRegistry;
 
-		if (_metricsConfig.getRegistry().equalsIgnoreCase("Influx"))
+		final String registryType = _metricsConfig.getRegistry();
+		if (StringUtils.equalsIgnoreCase("Influx", registryType))
 		{
 			InfluxMeterRegistryConfig meterRegistryConfig = new InfluxMeterRegistryConfig(_metricsConfig);
 			meterRegistry = new InfluxMeterRegistry(meterRegistryConfig, Clock.SYSTEM);
 		}
-		else
+		else if (StringUtils.equalsIgnoreCase("Datadog", registryType))
 		{
 			StatsdMeterRegistryConfig meterRegistryConfig = new StatsdMeterRegistryConfig(_metricsConfig);
 			meterRegistry = new StatsdMeterRegistry(meterRegistryConfig, Clock.SYSTEM);
 		}
+		else
+		{
+			_logger.error("unkown registry trype:{}", registryType);
+			throw new MetricsConfigException("Unknown registry type");
+		}
+
 		_registry.add(meterRegistry);
 		new JvmMemoryMetrics().bindTo(_registry);
 		new JvmGcMetrics().bindTo(_registry);
 		new JvmThreadMetrics().bindTo(_registry);
 		new JvmCompilationMetrics().bindTo(_registry);
 		new ProcessorMetrics().bindTo(_registry);
+	}
+
+
+
+
+
+	private Tags getCommonTags()
+	{
+		if (_metricsConfig == null)
+		{
+			return null;
+		}
+		else
+		{
+			return _metricsConfig.getCommonTags();
+		}
 	}
 
 
@@ -320,15 +346,4 @@ public class AppMetrics
 	}
 
 
-	private Tags getCommonTags()
-	{
-		if (_metricsConfig == null)
-		{
-			return null;
-		}
-		else
-		{
-			return _metricsConfig.getCommonTags();
-		}
-	}
 }

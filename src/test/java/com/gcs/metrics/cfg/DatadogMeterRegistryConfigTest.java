@@ -2,6 +2,10 @@ package com.gcs.metrics.cfg;
 
 import io.micrometer.statsd.StatsdFlavor;
 import io.micrometer.statsd.StatsdProtocol;
+import lombok.SneakyThrows;
+
+
+
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
@@ -23,7 +27,7 @@ import java.time.Duration;
 
 public class DatadogMeterRegistryConfigTest
 {
-    @Test
+    @Test @SneakyThrows
     public void createDatadogRegistry() throws ConfigurationException
     {
         final Parameters params = new Parameters();

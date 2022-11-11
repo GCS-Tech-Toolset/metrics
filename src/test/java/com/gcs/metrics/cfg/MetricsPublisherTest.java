@@ -27,6 +27,7 @@ import com.gcs.metrics.AppMetrics;
 
 
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -39,6 +40,7 @@ public class MetricsPublisherTest
 
     @Test
     @Ignore
+    @SneakyThrows
     public void test()
     {
         try

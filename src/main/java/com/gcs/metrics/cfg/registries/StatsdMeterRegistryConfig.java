@@ -35,7 +35,7 @@ public class StatsdMeterRegistryConfig implements StatsdConfig
 
 	public StatsdMeterRegistryConfig(MetricsProps props_)
 	{
-		this._statsdMetricsProps = (StatsdMetricsProps) props_;
+		_statsdMetricsProps = (StatsdMetricsProps) props_;
 	}
 
 
