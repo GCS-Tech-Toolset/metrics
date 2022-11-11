@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XXX>
-  <AppName>UnitTests</AppName>
-  <Environment>junit</Environment>
+	<AppName>UnitTests</AppName>
+	<Environment>junit</Environment>
 
-  <AppMetrics>
-    <Enabled>true</Enabled>
-    <Registry>Influx</Registry>
-    <ReportingFrequencyInSeconds>5</ReportingFrequencyInSeconds>
+	<AppMetrics>
+		<Enabled>true</Enabled>
+		<Registry>Influx</Registry>
+		<ReportingFrequencyInSeconds>5</ReportingFrequencyInSeconds>
+		<EncryptedCredentials>false</EncryptedCredentials>
 
+		<Influx>
+			<Name>AEMltdqnqEmPAlD48TXVug==</Name>
+			<UserName>ee6SHf2cfaEgkYpJsQNZHUSPvpJ81ScU</UserName>
+			<Pasword>qaBernNglWl3GmR7m7KUz1bQZstYXPpz</Pasword>
+			<URI>http://localhost:8086</URI>
+			<AutoCreateDb>true</AutoCreateDb>
+			<BatchSizing>1000</BatchSizing>
+		</Influx>
 
-    <Influx>
-      <Name>AEMltdqnqEmPAlD48TXVug==</Name>
-      <UserName>ee6SHf2cfaEgkYpJsQNZHUSPvpJ81ScU</UserName>
-      <Pasword>qaBernNglWl3GmR7m7KUz1bQZstYXPpz</Pasword>
-      <URI>http://localhost:8086</URI>
-      <AutoCreateDb>true</AutoCreateDb>
-      <BatchSizing>1000</BatchSizing>
-    </Influx>
-
-  </AppMetrics>
+	</AppMetrics>
 </XXX>

@@ -15,6 +15,7 @@ import static com.gcs.metrics.cfg.MetricsUtils.decryptValue;
 
 
 import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.lang3.StringUtils;
 
 
 
@@ -47,11 +48,30 @@ public class InfluxMetricsProps extends MetricsProps
 
 
 	@Override
-	public void loadFromConfig(XMLConfiguration xmlConfiguration_)
+	public void loadFromConfig(XMLConfiguration xmlConfiguration_) throws MetricsConfigException
 	{
+		//
+		// basics
+		//
+		loadBasePropsFromConfig(xmlConfiguration_);
+
+
+
+		//
+		// this registry
+		//
 		_registry = "Influx";
 		_dbName = xmlConfiguration_.getString(buildMetricsKey("Influx.Name"));
 		_uri = xmlConfiguration_.getString(buildMetricsKey("Influx.URI"));
+		_autoCreateDb = xmlConfiguration_.getBoolean(buildMetricsKey("Influx.AutoCreateDb"), true);
+		_batchSize = xmlConfiguration_.getInt(buildMetricsKey("Influx.BatchSizing"), 1000);
+
+		
+
+
+		//
+		// creds
+		//
 		boolean encryptedCreds = xmlConfiguration_.getBoolean(buildMetricsKey("EncryptedCredentials"), false);
 		if (encryptedCreds)
 		{
@@ -64,11 +84,38 @@ public class InfluxMetricsProps extends MetricsProps
 			_dbPassword = xmlConfiguration_.getString(buildMetricsKey("Influx.Pasword"), "grafana");
 		}
 
-		_autoCreateDb = xmlConfiguration_.getBoolean(buildMetricsKey("Influx.AutoCreateDb"), true);
-		_batchSize = xmlConfiguration_.getInt(buildMetricsKey("Influx.BatchSizing"), 1000);
-		super.loadBasePropsFromConfig(xmlConfiguration_);
 
+
+
+
+		//
+		//
+		//
+		exceptOnEmpty("registry", _registry);
+		exceptOnEmpty("DbName", _dbName);
+		exceptOnEmpty("URI", _uri);
+		exceptOnEmpty("DbUsername", _dbUsername);
+		exceptOnEmpty("DbPassword", _dbPassword);
+
+
+
+
+		//
+		//
+		//
 		configureEnvironment();
+	}
+
+
+
+
+
+	private void exceptOnEmpty(String key_, String value_) throws MetricsConfigException
+	{
+		if (StringUtils.isEmpty(value_))
+		{
+			throw new MetricsConfigException("value not set, key:" + key_);
+		}
 	}
 
 

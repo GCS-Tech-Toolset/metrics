@@ -29,6 +29,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 
 
 
+import com.gcs.metrics.cfg.properties.MetricsConfigException;
 import com.gcs.metrics.cfg.properties.MetricsProps;
 import com.gcs.metrics.cfg.properties.MetricsPropsFactory;
 import com.gcs.metrics.cfg.registries.InfluxMeterRegistryConfig;
@@ -91,7 +92,7 @@ public class AppMetrics
 
 
 
-	public static AppMetrics initFromConfig(String cfg_)
+	public static AppMetrics initFromConfig(String cfg_) throws MetricsConfigException
 	{
 		try
 		{
@@ -119,7 +120,7 @@ public class AppMetrics
 
 
 
-	public static AppMetrics initFromConfig(XMLConfiguration cfg_)
+	public static AppMetrics initFromConfig(XMLConfiguration cfg_) throws MetricsConfigException
 	{
 
 		AppMetrics appM = getInstance();
@@ -238,7 +239,7 @@ public class AppMetrics
 
 
 
-	private MetricsProps loadConfig(XMLConfiguration cfg_)
+	private MetricsProps loadConfig(XMLConfiguration cfg_) throws MetricsConfigException
 	{
 		_enabled = cfg_.getBoolean(buildMetricsKey("Enabled"), false);
 		if (!_enabled)
@@ -254,7 +255,8 @@ public class AppMetrics
 			}
 		}
 
-		MetricsProps props = MetricsPropsFactory.getMetricsProps(cfg_.getString(buildMetricsKey("Registry")));
+		var key = buildMetricsKey("Registry");
+		MetricsProps props = MetricsPropsFactory.getMetricsProps(cfg_.getString(key));
 		props.loadFromConfig(cfg_);
 
 		if (_logger.isInfoEnabled())

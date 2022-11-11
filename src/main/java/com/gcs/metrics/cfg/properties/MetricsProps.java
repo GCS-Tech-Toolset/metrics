@@ -43,7 +43,7 @@ public abstract class MetricsProps
 
 
 
-	public abstract void loadFromConfig(XMLConfiguration xmlConfiguration_);
+	public abstract void loadFromConfig(XMLConfiguration xmlConfiguration_) throws MetricsConfigException;
 
 
 

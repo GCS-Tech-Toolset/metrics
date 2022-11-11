@@ -29,11 +29,18 @@ import org.junit.Test;
 
 
 import com.gcs.metrics.AppMetrics;
+import com.gcs.metrics.cfg.properties.MetricsConfigException;
+
+
+
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 
 
 
 
+@Slf4j
 public class TsfCounterTest
 {
 
@@ -42,22 +49,33 @@ public class TsfCounterTest
 
 	private void initMetricsRepo() throws ConfigurationException
 	{
-		final Parameters params = new Parameters();
-		final FileBasedConfigurationBuilder<XMLConfiguration> builder = new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
-				.configure(params.xml()
-						.setThrowExceptionOnMissing(false)
-						.setEncoding("UTF-8")
-						.setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
-						.setValidating(false)
-						.setFileName("./src/test/resources/junit-metrics.xml"));
-		final XMLConfiguration config = builder.getConfiguration();
-		AppMetrics.initFromConfig(config);
+		try
+		{
+			final Parameters params = new Parameters();
+			final FileBasedConfigurationBuilder<XMLConfiguration> builder = new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+					.configure(params.xml()
+							.setThrowExceptionOnMissing(false)
+							.setEncoding("UTF-8")
+							.setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
+							.setValidating(false)
+							.setFileName("./src/test/resources/junit-metrics-disabled.xml"));
+			final XMLConfiguration config = builder.getConfiguration();
+			AppMetrics.initFromConfig(config);
+		}
+		catch (ConfigurationException ex_)
+		{
+			_logger.error(ex_.toString(), ex_);
+		}
+		catch (MetricsConfigException ex_)
+		{
+			_logger.error(ex_.toString(), ex_);
+		}
 	}
 
 
 
 
-	@Ignore
+
 	@Test
 	public void testIndependentIncrement()
 	{
@@ -84,7 +102,7 @@ public class TsfCounterTest
 
 
 
-	
+
 	@Test
 	public void testDependentIncrement()
 	{
@@ -97,8 +115,6 @@ public class TsfCounterTest
 			TsfCounter counter = new TsfCounter("test-dependent", true);
 			counter.incrSuccess();
 			counter.incrFail();
-
-
 			assertEquals(1.0, counter.getSuccess().count(), 0.00);
 			assertEquals(1.0, counter.getFail().count(), 0.00);
 			assertEquals(2.0, counter.getTotal().count(), 0.00);
@@ -107,6 +123,7 @@ public class TsfCounterTest
 		{
 			fail(ex_.toString());
 		}
+		
 	}
 
 }

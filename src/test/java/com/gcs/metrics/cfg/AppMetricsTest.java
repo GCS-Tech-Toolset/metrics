@@ -13,11 +13,6 @@ package com.gcs.metrics.cfg;
 
 
 
-import com.gcs.metrics.AppMetrics;
-import com.gcs.metrics.cfg.properties.InfluxMetricsProps;
-
-
-
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
@@ -28,6 +23,13 @@ import org.junit.Test;
 
 
 
+import com.gcs.metrics.AppMetrics;
+import com.gcs.metrics.cfg.properties.InfluxMetricsProps;
+import com.gcs.metrics.cfg.properties.MetricsConfigException;
+
+
+
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -38,28 +40,33 @@ import lombok.extern.slf4j.Slf4j;
 public class AppMetricsTest
 {
 
-    @Test
-    public void test()
-    {
-        try
-        {
-            final Parameters params = new Parameters();
-            final FileBasedConfigurationBuilder<XMLConfiguration> builder = new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
-                    .configure(params.xml()
-                            .setThrowExceptionOnMissing(false)
-                            .setEncoding("UTF-8")
-                            .setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
-                            .setValidating(false)
-                            .setFileName("./src/test/resources/junit-metrics.xml"));
-            final XMLConfiguration config = builder.getConfiguration();
-            AppMetrics metrics = AppMetrics.initFromConfig(config);
-            Assert.assertEquals(metrics.getMetricsConfig().isEnabled(), true);
-            Assert.assertEquals(((InfluxMetricsProps)metrics.getMetricsConfig()).getBatchSize(), 1000);
-            Assert.assertEquals(((InfluxMetricsProps)metrics.getMetricsConfig()).getDbUsername(), "ee6SHf2cfaEgkYpJsQNZHUSPvpJ81ScU");
-        }
-        catch (ConfigurationException ex_)
-        {
-            _logger.error(ex_.toString(), ex_);
-        }
-    }
+	@Test
+	public void test()
+	{
+		try
+		{
+			final Parameters params = new Parameters();
+			final FileBasedConfigurationBuilder<XMLConfiguration> builder = new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+					.configure(params.xml()
+							.setThrowExceptionOnMissing(false)
+							.setEncoding("UTF-8")
+							.setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
+							.setValidating(false)
+							.setFileName("./src/test/resources/junit-metrics.xml"));
+			final XMLConfiguration config = builder.getConfiguration();
+			AppMetrics metrics = AppMetrics.initFromConfig(config);
+			Assert.assertNotNull(metrics.getMetricsConfig());
+			Assert.assertEquals(metrics.getMetricsConfig().isEnabled(), true);
+			Assert.assertEquals(((InfluxMetricsProps) metrics.getMetricsConfig()).getBatchSize(), 1000);
+			Assert.assertEquals(((InfluxMetricsProps) metrics.getMetricsConfig()).getDbUsername(), "ee6SHf2cfaEgkYpJsQNZHUSPvpJ81ScU");
+		}
+		catch (ConfigurationException ex_)
+		{
+			_logger.error(ex_.toString(), ex_);
+		}
+		catch (MetricsConfigException ex_)
+		{
+			_logger.error(ex_.toString(), ex_);
+		}
+	}
 }
