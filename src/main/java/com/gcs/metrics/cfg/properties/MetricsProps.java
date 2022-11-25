@@ -53,8 +53,8 @@ public abstract class MetricsProps
 	{
 		_reportingFrequencyInSeconds = xmlConfiguration_.getInt(buildMetricsKey("ReportingFrequencyInSeconds"), 5);
 		_enabled = xmlConfiguration_.getBoolean(buildMetricsKey("Enabled"), true);
-		_appName = xmlConfiguration_.getString("AppName", "Unknown");
-		_env = xmlConfiguration_.getString("Environment", "localhost");
+		_appName = xmlConfiguration_.getString(buildMetricsKey("AppName"), "Unknown");
+		_env = xmlConfiguration_.getString(buildMetricsKey("Environment"), "localhost");
 
 		try
 		{

@@ -240,6 +240,19 @@ public class AppMetrics
 
 
 
+	public TsfCounter createTsfCounter(@NonNull String name_, boolean autoIncrement_)
+	{
+		if (_logger.isTraceEnabled())
+		{
+			_logger.trace("building TsfCounter:{}", name_);
+		}
+		return new TsfCounter(name_, autoIncrement_);
+	}
+
+
+
+
+
 	private MetricsProps loadConfig(XMLConfiguration cfg_) throws MetricsConfigException
 	{
 		_enabled = cfg_.getBoolean(buildMetricsKey("Enabled"), false);
