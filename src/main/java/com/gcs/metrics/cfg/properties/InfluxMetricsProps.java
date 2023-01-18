@@ -92,10 +92,10 @@ public class InfluxMetricsProps extends MetricsProps
 		//
 		//
 		exceptOnEmpty("registry", _registry);
-		exceptOnEmpty("DbName", _dbName);
-		exceptOnEmpty("URI", _uri);
-		exceptOnEmpty("DbUsername", _dbUsername);
-		exceptOnEmpty("DbPassword", _dbPassword);
+		exceptOnEmpty("Influx.Name", _dbName);
+		exceptOnEmpty("Influx.URI", _uri);
+		exceptOnEmpty("Influx.UserName", _dbUsername);
+		exceptOnEmpty("Influx.Pasword", _dbPassword);
 
 
 
