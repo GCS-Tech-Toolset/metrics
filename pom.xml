@@ -3,14 +3,53 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gcs.toolset</groupId>
   <artifactId>metrics</artifactId>
-	<version>1.2</version>
-
+  <version>1.2</version>
   <scm>
     <connection>cm:git:git@github.com:GCS-Tech/gcs-metrics.git</connection>
     <developerConnection>scm:git:git@github.com:GCS-Tech/gcs-metrics.git</developerConnection>
     <url>https://github.com/GCS-Tech/gcs-metrics.git</url>
     <tag>${project.version}</tag>
   </scm>
+  <!-- gcs repos -->
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>Maven Central</name>
+      <layout>default</layout>
+      <url>https://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>gcs-central</id>
+      <name>gcs-libs-release</name>
+      <url>https://gcsrepo.jfrog.io/artifactory/gcs-libs-release</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gcs-central</id>
+      <name>gcs-libs-release</name>
+      <url>https://gcsrepo.jfrog.io/artifactory/gcs-libs-release-local</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  <distributionManagement>
+    <repository>
+      <id>central</id>
+      <name>a0lhjjbehcxxd-artifactory-primary-0-releases</name>
+      <url>https://gcsrepo.jfrog.io/artifactory/gcs-libs-release</url>
+    </repository>
+  </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -90,13 +129,6 @@
       <version>1.1</version>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <repository>
-      <id>central</id>
-      <name>a0lhjjbehcxxd-artifactory-primary-0-releases</name>
-      <url>https://gcsrepo.jfrog.io/artifactory/gcs-libs-release</url>
-    </repository>
-  </distributionManagement>
   <build>
     <plugins>
       <plugin>
