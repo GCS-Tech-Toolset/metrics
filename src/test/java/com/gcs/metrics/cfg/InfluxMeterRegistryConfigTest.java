@@ -49,7 +49,7 @@ public class InfluxMeterRegistryConfigTest
 						.setFileName("./src/test/resources/junit-metrics.xml"));
 		final XMLConfiguration config = builder.getConfiguration();
 		InfluxMetricsProps props = new InfluxMetricsProps();
-		props.loadFromConfig(config);
+		props.loadFromXml(config);
 		InfluxMeterRegistryConfig influxMeterRegistryConfig = new InfluxMeterRegistryConfig(props);
 
 		Assert.assertEquals(props.getDbName(), influxMeterRegistryConfig.db());

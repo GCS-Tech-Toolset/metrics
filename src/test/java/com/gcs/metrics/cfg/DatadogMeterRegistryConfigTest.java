@@ -40,7 +40,7 @@ public class DatadogMeterRegistryConfigTest
                         .setFileName("./src/test/resources/junit-metrics-datadog.xml"));
         final XMLConfiguration config = builder.getConfiguration();
         StatsdMetricsProps props = new StatsdMetricsProps();
-        props.loadFromConfig(config);
+        props.loadFromXml(config);
         StatsdMeterRegistryConfig datadogMeterRegistryConfig = new StatsdMeterRegistryConfig(props);
 
         Assert.assertEquals(true, datadogMeterRegistryConfig.enabled());

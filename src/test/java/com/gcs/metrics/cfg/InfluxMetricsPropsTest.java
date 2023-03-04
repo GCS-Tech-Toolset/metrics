@@ -45,7 +45,7 @@ public class InfluxMetricsPropsTest
 						.setFileName("./src/test/resources/junit-metrics.xml"));
 		final XMLConfiguration config = builder.getConfiguration();
 		InfluxMetricsProps props = new InfluxMetricsProps();
-		props.loadFromConfig(config);
+		props.loadFromXml(config);
 
 		Assert.assertEquals(true, props.isEnabled());
 		Assert.assertEquals(5, props.getReportingFrequencyInSeconds());
@@ -62,7 +62,7 @@ public class InfluxMetricsPropsTest
 		Assert.assertEquals(1000, props.getBatchSize());
 		Assert.assertEquals("2", props.getNumberOfInfluxThreads());
 		Assert.assertEquals("10s", props.getInfluxReadTimeout());
-		Assert.assertEquals("1s", props.getInfluxConnectTimeout());
+		Assert.assertEquals("1s", props.getInfluxConnectTimeoutD());
 		Assert.assertEquals("Retention", props.getInfluxRetentionPolicy());
 		Assert.assertEquals("true", props.getInfluxCompressed());
 		Assert.assertEquals("one", props.getInfluxConsistency());

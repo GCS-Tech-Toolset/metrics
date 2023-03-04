@@ -45,7 +45,7 @@ public class DatadogMetricsPropsTest
 						.setFileName("./src/test/resources/junit-metrics-datadog.xml"));
 		final XMLConfiguration config = builder.getConfiguration();
 		StatsdMetricsProps props = new StatsdMetricsProps();
-		props.loadFromConfig(config);
+		props.loadFromXml(config);
 
 		Assert.assertEquals(true, props.isEnabled());
 		Assert.assertEquals(5, props.getReportingFrequencyInSeconds());

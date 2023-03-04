@@ -10,6 +10,7 @@ package com.gcs.metrics.cfg.properties;
 
 
 import lombok.Data;
+import lombok.NonNull;
 
 
 
@@ -18,6 +19,7 @@ import static com.gcs.metrics.cfg.MetricsUtils.buildMetricsKey;
 
 
 import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 
 
@@ -34,11 +36,16 @@ public class StatsdMetricsProps extends MetricsProps
 
 
 	@Override
-	public void loadFromConfig(XMLConfiguration xmlConfiguration_)
+	public void loadFromXml(@NonNull XMLConfiguration cfg_) throws ConfigurationException
 	{
 		_registry = "Datadog";
-		_hostIP = xmlConfiguration_.getString(buildMetricsKey("Datadog.HostIP"), "localhost");
-		_port = xmlConfiguration_.getInt(buildMetricsKey("Datadog.Port"), 8125);
-		loadBasePropsFromConfig(xmlConfiguration_);
+		_hostIP = cfg_.getString(buildMetricsKey("Datadog.HostIP"), "localhost");
+		_port = cfg_.getInt(buildMetricsKey("Datadog.Port"), 8125);
+		loadBasePropsFromConfig(cfg_);
 	}
+
+
+
+
+
 }

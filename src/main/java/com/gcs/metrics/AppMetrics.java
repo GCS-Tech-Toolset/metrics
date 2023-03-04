@@ -269,17 +269,25 @@ public class AppMetrics
 			}
 		}
 
-		var key = buildMetricsKey("Registry");
-		MetricsProps props = MetricsPropsFactory.getMetricsProps(cfg_.getString(key));
-		props.loadFromConfig(cfg_);
 
-		if (_logger.isInfoEnabled())
+		try
 		{
-			_logger.info("app-name:{}", props.getAppName());
-			_logger.info("host:{}", props.getHostname());
-			_logger.info("env:{}", props.getEnv());
+			var key = buildMetricsKey("Registry");
+			MetricsProps props = MetricsPropsFactory.getMetricsProps(cfg_.getString(key));
+			props.loadFromXml(cfg_);
+
+			if (_logger.isInfoEnabled())
+			{
+				_logger.info("app-name:{}", props.getAppName());
+				_logger.info("host:{}", props.getHostname());
+				_logger.info("env:{}", props.getEnv());
+			}
+			return props;
 		}
-		return props;
+		catch (ConfigurationException ex_)
+		{
+			throw new MetricsConfigException(ex_);
+		}
 	}
 
 
