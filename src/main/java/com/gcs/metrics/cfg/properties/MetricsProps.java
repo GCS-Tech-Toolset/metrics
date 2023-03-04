@@ -15,6 +15,7 @@ import static com.gcs.metrics.cfg.MetricsUtils.buildMetricsKey;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -53,7 +54,11 @@ public abstract class MetricsProps implements IProps
 
 	public Map<String, String> toMap()
 	{
-		return null;
+		Map<String, String> metrics = new HashMap<>();
+		metrics.put("Enabled", Boolean.toString(_enabled));
+		metrics.put("env", _env);
+		metrics.put("AppName", _appName);
+		return metrics;
 	}
 
 
