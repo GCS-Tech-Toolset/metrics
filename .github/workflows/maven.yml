@@ -48,9 +48,7 @@ jobs:
         distribution: 'oracle'
         cache: maven
         
-    - name: Show Secrets
-      run: echo "username ${{ secrets.JFROG_USERNAME }}"
-
     - name: Deploy with Maven
-      run: mvn -B deploy -Dmaven.test.skip=true -Dmaven.install.skip=true --file pom.xml -s ./src/main/assembly/maven-settings.xml
+      run: mvn -B deploy -Dmaven.test.skip=true -Dmaven.install.skip=true --file pom.xml -s ./.github/workflows/jfrog-deployment.xml
+      
       
