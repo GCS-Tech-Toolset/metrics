@@ -9,19 +9,27 @@ package com.gcs.metrics.cfg.properties;
 
 
 
-import io.micrometer.core.instrument.Tags;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration2.XMLConfiguration;
-
-
-
 import static com.gcs.metrics.cfg.MetricsUtils.buildMetricsKey;
 
 
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
+
+
+
+import org.apache.commons.configuration2.XMLConfiguration;
+
+
+
+import com.gcs.config.IProps;
+
+
+
+import io.micrometer.core.instrument.Tags;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 
 
@@ -29,7 +37,7 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @Data
-public abstract class MetricsProps
+public abstract class MetricsProps implements IProps
 {
 	protected boolean	_enabled;
 	protected int		_reportingFrequencyInSeconds;
@@ -43,7 +51,10 @@ public abstract class MetricsProps
 
 
 
-	public abstract void loadFromConfig(XMLConfiguration xmlConfiguration_) throws MetricsConfigException;
+	public Map<String, String> toMap()
+	{
+		return null;
+	}
 
 
 

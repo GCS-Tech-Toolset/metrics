@@ -15,11 +15,13 @@ import static com.gcs.metrics.cfg.MetricsUtils.decryptValue;
 
 
 import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 
 
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.ToString;
 
 
@@ -38,17 +40,14 @@ public class InfluxMetricsProps extends MetricsProps
 	private int		_batchSize;
 	private String	_numberOfInfluxThreads	= "2";
 	private String	_influxReadTimeout		= "10s";
-	private String	_influxConnectTimeout	= "1s";
+	private String	_influxConnectTimeoutD	= "1s";
 	private String	_influxRetentionPolicy	= "Retention";
 	private String	_influxCompressed		= "true";
 	private String	_influxConsistency		= "one";
 
 
-
-
-
 	@Override
-	public void loadFromConfig(XMLConfiguration xmlConfiguration_) throws MetricsConfigException
+	public void loadFromXml(@NonNull XMLConfiguration xmlConfiguration_) throws ConfigurationException
 	{
 		//
 		// basics
@@ -66,7 +65,7 @@ public class InfluxMetricsProps extends MetricsProps
 		_autoCreateDb = xmlConfiguration_.getBoolean(buildMetricsKey("Influx.AutoCreateDb"), true);
 		_batchSize = xmlConfiguration_.getInt(buildMetricsKey("Influx.BatchSizing"), 1000);
 
-		
+
 
 
 		//
@@ -110,11 +109,11 @@ public class InfluxMetricsProps extends MetricsProps
 
 
 
-	private void exceptOnEmpty(String key_, String value_) throws MetricsConfigException
+	private void exceptOnEmpty(String key_, String value_) throws ConfigurationException
 	{
 		if (StringUtils.isEmpty(value_))
 		{
-			throw new MetricsConfigException("value not set, key:" + key_);
+			throw new ConfigurationException("value not set, key:" + key_);
 		}
 	}
 
@@ -155,9 +154,14 @@ public class InfluxMetricsProps extends MetricsProps
 		System.setProperty("management.metrics.export.influx.compressed", _influxCompressed);
 
 		// Connection timeout for requests to this backend.
-		System.setProperty("management.metrics.export.influx.connect-timeout", _influxConnectTimeout);
+		System.setProperty("management.metrics.export.influx.connect-timeout", _influxConnectTimeoutD);
 
 		// Write consistency for each point.
 		System.setProperty("management.metrics.export.influx.consistency", _influxConsistency);
 	}
+
+
+
+
+
 }
