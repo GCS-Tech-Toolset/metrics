@@ -51,3 +51,11 @@ _metrics = AppMetrics.initFromCong(configFile);
 
 
 # Other
+
+
+
+# Releases
+## v1.3
+
+  * added the ability to associate tags with Gauges
+  
