@@ -199,7 +199,7 @@ public class AppMetrics
 
 
 
-    public AtomicLong createGauge(@NonNull String name_, String[] tags_)
+    public AtomicLong createGauge(@NonNull String name_, String... tags_)
     {
         if (_registry == null)
         {
@@ -230,7 +230,7 @@ public class AppMetrics
 
 
 
-    public Counter createCounter(@NonNull String name_, String[] tags_)
+    public Counter createCounter(@NonNull String name_, String... tags_)
     {
         if (_registry == null)
         {
